@@ -15,7 +15,9 @@ class RegistFormView extends StatelessWidget {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.navigate_next_outlined),
-            onPressed: () {},
+            onPressed: () {
+              controller.sendDataToTheNextView();
+            },
           ),
           appBar: AppBar(
             title: Center(child: Text("Regisztráció")),
@@ -65,9 +67,11 @@ class RegistFormView extends StatelessWidget {
                   ],
                   onChanged: (p0) {
                     if (p0 != null) {
-                      controller.selectedGender = p0.toString();
+                      if(p0.toString()=="férfi"){
+                      controller.male = true;
                     } else {
-                      controller.selectedGender = "";
+                      controller.male = false;
+                    }
                     }
                   },
                 ),
@@ -81,13 +85,31 @@ class RegistFormView extends StatelessWidget {
                     "piros",
                     "sárga",
                   ],
-                  onChanged: (p0) {},
+                  onChanged: (p0) {
+                    if(p0!=null){
+                      controller.favoriteColors=p0;
+                      print(p0);
+                    }
+                  },
                 ),
                 Text("Válaszd ki a kedvenc autómárkád"),
                 Text("automárka"),
                 CupertinoButton.filled(
                   child: Text("Autómárka kiválasztása"),
-                  onPressed: () {},
+                  onPressed: () {
+                     Get.bottomSheet(Container(
+                color: Colors.white,
+                height: 150,
+                child: CupertinoPicker(itemExtent: 30,
+                onSelectedItemChanged: (int index){
+                  controller.setSelectedCarBand(index);
+                },
+                children: controller.elements,
+                  
+                
+                ),
+              ));
+                  },
                 ),
                 Divider(),
               ],
